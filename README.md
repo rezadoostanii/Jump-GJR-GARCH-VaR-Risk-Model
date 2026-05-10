@@ -82,5 +82,15 @@ The system generates:
 ## ▶️ How to Run
 
 ```bash
+
 pip install numpy pandas matplotlib scipy arch
 python main.py
+⚠️ Important Note
+
+This repository does NOT include financial data due to size and licensing constraints.  
+Users must supply their own SQLite database with the following structure:
+
+- Table: {ticker}_prices
+- Columns: Date, Close
+
+The system is designed to work with any asset once properly formatted.
