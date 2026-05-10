@@ -1,96 +1,111 @@
-# 🚀 Jump + GJR-GARCH VaR Risk Model
+# 🚀 Jump + GJR-GARCH Risk Modeling & VaR Backtesting Engine
 
 ## 📌 Overview
+This project implements a hybrid quantitative risk modeling system combining:
 
-This project is a **quantitative risk modeling engine** for financial assets.  
-It combines volatility modeling, jump processes, and statistical risk measurement to estimate and backtest market risk.
+- GJR-GARCH(1,1) volatility model with leverage effect
+- Student-t distributed returns (fat tails)
+- Poisson jump-diffusion process (market shocks)
+- Value-at-Risk (VaR) and Conditional VaR (CVaR)
+- Full statistical backtesting framework (Kupiec & Christoffersen tests)
+- Rolling window forecasting system
 
-The system is designed for **market risk analysis and portfolio risk research**.
+The goal is to build a realistic institutional-grade risk engine for financial assets.
 
 ---
 
-## ⚙️ Models Used
+## ⚙️ Key Features
 
-### 📊 GJR-GARCH(1,1)
-- Models volatility clustering in financial returns
-- Captures **leverage effect** (bad news increases volatility more than good news)
-- Uses Student-t distribution for fat tails
+- 📊 Volatility modeling with asymmetric shocks (GJR-GARCH)
+- ⚡ Jump diffusion process for crash modeling
+- 📉 VaR & CVaR estimation across multiple horizons
+- 🔍 Backtesting with statistical validation
+- 📈 Rolling forecast evaluation
+- 🧪 Exception clustering detection
+- 💾 SQLite-based financial data integration
+- 📊 Visualization of risk, forecasts, and distributions
 
-### ⚡ Jump Diffusion Model
-- Simulates sudden market shocks (crashes/spikes)
+---
+
+## 🧠 Models Used
+
+### GJR-GARCH(1,1)
+Captures volatility clustering and leverage effect:
+- Negative shocks increase volatility more than positive ones
+- Student-t distribution handles fat tails
+
+---
+
+### Jump Diffusion Model
+Models sudden market movements:
 - Poisson jump arrivals
 - Random jump size distribution
+- Captures extreme events (crashes / spikes)
 
 ---
 
-## 📉 Risk Measures
+## 📉 Backtesting Framework
 
-- Value-at-Risk (VaR)
-- Conditional Value-at-Risk (CVaR)
-- Multi-horizon risk forecasts (30, 60, 90, 120 days)
+### Kupiec Test (Unconditional Coverage)
+Checks if VaR violation frequency matches expected level.
 
----
+### Christoffersen Test (Conditional Coverage)
+Tests:
+- Independence of violations
+- Clustering of risk events
 
-## 🔍 Backtesting
-
-The model is validated using:
-
-### ✔ Kupiec Test
-- Checks if VaR violation frequency is correct
-- Detects under/overestimation of risk
-
-### ✔ Christoffersen Test
-- Checks independence of violations
-- Detects clustering of extreme events
+### Outputs:
+- Exception rate
+- Likelihood ratio statistics
+- P-values
+- Model rejection/acceptance decision
 
 ---
 
-## 📊 Outputs
+## 📊 Outputs Generated
 
-The system generates:
-
-- Monte Carlo price simulations
-- VaR & CVaR tables
-- Risk heatmaps
-- Forecast distributions
-- Rolling backtest results
-- Exception analysis plots
-
----
-
-## 🧠 Key Insights
-
-- GJR-GARCH captures volatility clustering effectively
-- Jump component improves tail risk modeling
-- VaR alone is insufficient without jump modeling
-- CVaR provides more stable downside risk measure
-- Model performance improves under rolling validation
+- Forecast price distributions
+- VaR / CVaR risk curves
+- Rolling prediction error analysis
+- VaR violation timeline
+- Monte Carlo simulation paths
+- Risk summary tables
+- Heatmaps across time horizons
 
 ---
 
-## 🛠️ Tech Stack
+## 📁 Project Structure
 
-- Python 3
-- NumPy / Pandas
-- SciPy
-- ARCH package
-- Matplotlib
-- SQLite
+- main.py → Main model & execution script
+- requirements.txt → Dependencies
+- Result/ → Output charts (plots, heatmaps)
+- README.md → Documentation
+
+---
+
+## ⚠️ Data Requirement
+
+This repository does NOT include financial data.
+
+You must provide your own SQLite database (portfolio.db).
+
+### Required format:
+- Table name: {ticker}_prices
+- Columns:
+  - Date
+  - Close
+
+Example table:
+nvda_prices  
+- Date  
+- Close  
+
+The system will automatically read the data from the database path defined in main.py.
 
 ---
 
 ## ▶️ How to Run
 
+Install dependencies:
 ```bash
-
-pip install numpy pandas matplotlib scipy arch
-python main.py
-⚠️ Important Note
-
-This repository does NOT include financial data due to size and licensing constraints.  
-Users must supply their own SQLite database with the following structure:
-
-- Table: {ticker}_prices
-- Columns: Date, Close
-
-The system is designed to work with any asset once properly formatted.
+pip install -r requirements.txt
